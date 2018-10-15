@@ -52,9 +52,8 @@ public class LoginServiceImpl implements ILoginService {
 
     @Override
     public String LoginMyblog(String url, Map<String, Object> paramMap) {
-        String postCookie="";
         String successPage = HttpClient4.doPost(url,paramMap);
-        postCookie = HttpClient4.responseCookie;
+        String postCookie = HttpClient4.responseCookie;
         System.out.println("cookie:" + HttpClient4.responseCookie);
         System.out.println("---------------------------");
         for (Header h: HttpClient4.headers

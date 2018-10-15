@@ -42,9 +42,9 @@ public class ControllerTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if (loginService.LoginMyblog(map.get("action").toString(),paramMap)){
+        /*if (loginService.LoginMyblog(map.get("action").toString(),paramMap)){
             System.out.println("登陆成功");
-        }
+        }*/
 
 
     }

@@ -17,13 +17,13 @@ public interface IArticleService {
      * 文章列表链接-发表时间
      * @return
      */
-    Map<String,String> getPostList();
+    Map<String,String> getPostList(String url, String cookie);
 
     /**
      * 获取文章MD内容存入Article
      * @param postList
      * @return
      */
-    List<Article> toArticle(Map<String,String> postList);
+    List<Article> toArticle(String url, String cookie, Map<String,String> postList);
 
 }
