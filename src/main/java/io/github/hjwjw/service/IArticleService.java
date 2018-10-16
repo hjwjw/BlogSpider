@@ -21,9 +21,9 @@ public interface IArticleService {
 
     /**
      * 获取文章MD内容存入Article
-     * @param postList
+     * @param postMap
      * @return
      */
-    List<Article> toArticle(String url, String cookie, Map<String,String> postList);
+    List<Article> toArticle(String url, String cookie, Map<String,String> postMap);
 
 }

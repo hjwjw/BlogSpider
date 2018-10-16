@@ -14,7 +14,8 @@ public interface IMdService {
 
     /**
      * 将所有Aiticle写入MD文件
+     * @param saveUrl 文件存放路径
      * @param articleList
      */
-    Boolean writerMd(List<Article> articleList);
+    Boolean writerMd(String saveUrl, List<Article> articleList);
 }
