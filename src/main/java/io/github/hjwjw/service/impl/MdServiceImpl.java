@@ -26,6 +26,14 @@ public class MdServiceImpl implements IMdService {
         }
         if (articleList!=null && articleList.size() >0){
             for (Article a : articleList) {
+                String[] tags = a.getTags().split(",");
+                StringBuffer preTags = new StringBuffer();
+                preTags.append("tags: \n");
+                for (String s : tags) {
+                    preTags.append("     - ");
+                    preTags.append(s);
+                    preTags.append("\n");
+                }
                 File newDir = new File(dir,a.getCategories());
                 if (!newDir.exists()){
                     newDir.mkdirs();
@@ -35,8 +43,9 @@ public class MdServiceImpl implements IMdService {
                     fw.write("---\n");
                     fw.write("title: " + a.getTitle() + "\n");
                     fw.write("date: "+a.getCreateDate() + "\n");
-                    fw.write("tags: "+a.getTags() + "\n");
                     fw.write("categories: "+a.getCategories() + "\n");
+                    fw.write("header-img: \"images/16-8-new-bg.jpg\"");
+                    fw.write(preTags.toString());
                     fw.write("---\n\n");
                     fw.write(a.getMarkdownContent()+"\n");
                 }catch (IOException e){
