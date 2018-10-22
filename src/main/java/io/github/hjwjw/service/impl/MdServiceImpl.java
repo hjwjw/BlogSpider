@@ -7,7 +7,11 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 /**
  * The MdServiceImpl class.
@@ -20,6 +24,8 @@ public class MdServiceImpl implements IMdService {
     @Override
     public Boolean writerMd(String saveUrl, List<Article> articleList) {
         Boolean success = true;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         File dir = new File(saveUrl);
         if (!dir.exists()){
             dir.mkdirs();
@@ -42,13 +48,15 @@ public class MdServiceImpl implements IMdService {
                 try(FileWriter fw = new FileWriter(newFile)) {
                     fw.write("---\n");
                     fw.write("title: " + a.getTitle() + "\n");
-                    fw.write("date: "+a.getCreateDate() + "\n");
+                    fw.write("date: "+df.format(dateFormat.parse(a.getCreateDate())) + "\n");
                     fw.write("categories: "+a.getCategories() + "\n");
                     fw.write("header-img: \"images/16-8-new-bg.jpg\"\n");
                     fw.write(preTags.toString());
                     fw.write("---\n\n");
                     fw.write(a.getMarkdownContent()+"\n");
                 }catch (IOException e){
+                    e.printStackTrace();
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
