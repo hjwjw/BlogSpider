@@ -44,7 +44,7 @@ public class MdServiceImpl implements IMdService {
                     fw.write("title: " + a.getTitle() + "\n");
                     fw.write("date: "+a.getCreateDate() + "\n");
                     fw.write("categories: "+a.getCategories() + "\n");
-                    fw.write("header-img: \"images/16-8-new-bg.jpg\"");
+                    fw.write("header-img: \"images/16-8-new-bg.jpg\"\n");
                     fw.write(preTags.toString());
                     fw.write("---\n\n");
                     fw.write(a.getMarkdownContent()+"\n");
