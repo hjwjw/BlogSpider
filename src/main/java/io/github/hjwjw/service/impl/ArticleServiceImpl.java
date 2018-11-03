@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import io.github.hjwjw.entity.Article;
 import io.github.hjwjw.service.IArticleService;
 import io.github.hjwjw.utils.HttpClient4;
+import io.github.hjwjw.utils.ImageUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,6 +28,8 @@ import java.util.regex.Pattern;
  */
 @Service
 public class ArticleServiceImpl implements IArticleService {
+    private static Pattern p = Pattern.compile("[\\s+\\.\\!\\/_,$%^*(+\\\"\\']+|[+——！，。？、~@#￥%……&*（）()]+");
+
     @Override
     public Map<String, String> getPostList(String url, String cookie) {
         Map<String, String> postMap = new HashMap<>();
@@ -59,7 +62,6 @@ public class ArticleServiceImpl implements IArticleService {
     public List<Article> toArticle(String url, String cookie, Map<String, String> postMap) {
         List<Article> articleList = new ArrayList<>();
         String articleJson;
-        Pattern p = Pattern.compile("[\\s+\\.\\!\\/_,$%^*(+\\\"\\']+|[+——！，。？、~@#￥%……&*（）()]+");
         for (Map.Entry<String, String> entry : postMap.entrySet()) {
             articleJson = HttpClient4.doGet(url  + entry.getKey(), cookie);
             if (HttpClient4.httpStatus) {
@@ -76,7 +78,8 @@ public class ArticleServiceImpl implements IArticleService {
                         a.setPrivateStatus(jsonData.getString("private"));
                         a.setStatus(jsonData.getString("status"));
                         a.setType(jsonData.getString("type"));
-                        a.setMarkdownContent(jsonData.getString("markdowncontent"));
+                        String content = ImageUtil.replaceImg(jsonData.getString("markdowncontent"));
+                        a.setMarkdownContent(content);
                         a.setCreateDate(entry.getValue());
                     } else {
                         continue;
