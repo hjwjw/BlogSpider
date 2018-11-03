@@ -14,5 +14,5 @@ csdn博客模拟登陆，抓取自己的博客文章到本地写成Markdown文�
 ### TODO
 - [x] 模拟登陆
 - [x] 获取博文写MD
-- [ ] 解决csdn图片防盗链(通过 referer 防盗链)
+- [x] 解决csdn图片防盗链(通过 referer 防盗链)
 - [ ] 生成MD后自动部署到hexo
