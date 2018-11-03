@@ -102,7 +102,16 @@ public class ImageUtil {
         for (Map.Entry<String, String> entry : imgInfo.entrySet()) {
             try {
                 URL url = new URL(entry.getKey());
+
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestProperty("Referer", "https://blog.csdn.net");
+                connection.setConnectTimeout(600000);
+                connection.setReadTimeout(600000);
+                connection.setRequestMethod("GET");
+                connection.connect();
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
+                     continue;
+                }
                 DataInputStream in = new DataInputStream(connection.getInputStream());
                 String time = String.valueOf(System.currentTimeMillis());
                 File file = new File(savePath + "\\" + entry.getValue() + ".jpg");
