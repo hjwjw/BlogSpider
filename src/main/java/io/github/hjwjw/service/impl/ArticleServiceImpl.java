@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  */
 @Service
 public class ArticleServiceImpl implements IArticleService {
-    private static Pattern p = Pattern.compile("[\\s+\\.\\!\\/_,$%^*(+\\\"\\']+|[+——！，。？、~@#￥%……&*（）()]+");
+    private static Pattern p = Pattern.compile("[\\s+\\.\\!\\/_,$%^*(+\\\"\\']+|[+——！，。？、~@#￥%……&*（）():：]+");
 
     @Override
     public Map<String, String> getPostList(String url, String cookie) {
@@ -62,6 +62,8 @@ public class ArticleServiceImpl implements IArticleService {
     public List<Article> toArticle(String url, String cookie, Map<String, String> postMap) {
         List<Article> articleList = new ArrayList<>();
         String articleJson;
+        String tags;
+        String content;
         for (Map.Entry<String, String> entry : postMap.entrySet()) {
             articleJson = HttpClient4.doGet(url  + entry.getKey(), cookie);
             if (HttpClient4.httpStatus) {
@@ -72,13 +74,17 @@ public class ArticleServiceImpl implements IArticleService {
                     //非原创与非Markdown编写的文章排除
                     if ("original".equals(jsonData.getString("type")) && !ObjectUtils.isEmpty(jsonData.getString("markdowncontent"))) {
                         Matcher m = p.matcher(jsonData.getString("title"));
-                        a.setTitle(m.replaceAll("").trim());
+                        a.setTitle(m.replaceAll(" ").trim());
                         a.setCategories(jsonData.getString("categories"));
-                        a.setTags(jsonData.getString("tags"));
+                        tags = jsonData.getString("tags");
+                        if (ObjectUtils.isEmpty(tags) || tags == ""){
+                            tags = jsonData.getString("categories");
+                        }
+                        a.setTags(tags);
                         a.setPrivateStatus(jsonData.getString("private"));
                         a.setStatus(jsonData.getString("status"));
                         a.setType(jsonData.getString("type"));
-                        String content = ImageUtil.replaceImg(jsonData.getString("markdowncontent"));
+                        content = ImageUtil.replaceImg(jsonData.getString("markdowncontent"));
                         a.setMarkdownContent(content);
                         a.setCreateDate(entry.getValue());
                     } else {
